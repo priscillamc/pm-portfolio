@@ -21,10 +21,12 @@
  * Text Domain: pm-enhanced-portfolio
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ * BuildDate: 20181226
  */
 	 
 add_action( 'admin_menu', 'pmep_add_admin_menu' );
 add_action( 'admin_init', 'pmep_settings_init' );
+add_action( 'registered_post_type', 'pmep_change_post_type', 10, 2 );
 
 function pmep_add_admin_menu(  ) { 
 
@@ -64,21 +66,23 @@ function pmep_settings_init(  ) {
 }
 
 /**
- * [[Description]]
+ * Display the title field
  * 
  * @todo Add default title if not set
  */
-function pmep_portfolio_title_render(  ) { 
+function pmep_portfolio_title_render() { 
 
 	$options = get_option( 'pmep_settings' );
+	$default = get_post_type_object('jetpack-portfolio')->labels->name;
+	$title = ( isset( $options['portfolio_title'] ) )? $options['portfolio_title'] : $default;
 	?>
-	<input type="text" name="pmep_settings[portfolio_title]" value="<?php echo $options['portfolio_title']; ?>">
+	<input type="text" name="pmep_settings[portfolio_title]" value="<?php echo $title; ?>">
 	<?php
 
 }
 
 /**
- * [[Description]]
+ * Display the description field
  * 
  * @todo Add the default description if not set
  * @todo Hook into WordPress text editor
@@ -86,8 +90,10 @@ function pmep_portfolio_title_render(  ) {
 function pmep_portfolio_description_render(  ) { 
 
 	$options = get_option( 'pmep_settings' );
+	$default = get_post_type_object('jetpack-portfolio')->description;
+	$description = ( isset( $options['portfolio_description'] ) )? $options['portfolio_description'] : $default;
 	?>
-	<textarea cols="40" rows="5" name="pmep_settings[portfolio_description]"><?php echo $options['portfolio_description']; ?></textarea>
+	<textarea cols="40" rows="5" name="pmep_settings[portfolio_description]"><?php echo $description; ?></textarea>
 	<?php
 
 }
@@ -121,5 +127,28 @@ function pmep_options_page(  ) {
 	</form>
 	<?php
 	$options = get_option( 'pmep_settings' );
-	var_dump($options);
+	var_dump( $options );
+	var_dump( get_post_type_object('jetpack-portfolio') );
+}
+
+/**
+ * Changes the Jetpack Portfolio labels
+ * 
+ * @param  object $labels [[Description]]
+ * @return object [[Description]]
+ */
+function pmep_change_post_type( $post_type, $post_type_object ){
+	$options = get_option( 'pmep_settings' );
+	
+	if ( 'jetpack-portfolio' == $post_type ){
+		// Replace the title
+		if ( isset( $options['portfolio_title'] ) ){
+			$post_type_object->labels->name = $options['portfolio_title'];
+		}
+
+		// Replace the description
+		if ( isset( $options['portfolio_description'] ) ){
+			$post_type_object->description = $options['portfolio_description'];
+		}	
+	}
 }
