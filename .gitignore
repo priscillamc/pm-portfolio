@@ -1,0 +1,12 @@
+# Ignore local files
+.DS_Store
+Thumbs.db
+
+# Ignore node dependency directories
+node_modules/
+
+# Ignore sass files
+.sass-cache
+
+# Ignore log and temp files
+*.log

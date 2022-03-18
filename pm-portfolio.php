@@ -1,6 +1,6 @@
 <?php
 /**
- * PM Enhanced Portfolio
+ * PM Portfolio
  *
  * @package     PM_Enhanced_Portfolio
  * @author      priscillamc
@@ -12,7 +12,7 @@
  * @todo Add support for changing taxonomy attributes and slugs
  *
  * @wordpress-plugin
- * Plugin Name: PM Enhanced Portfolio
+ * Plugin Name: PM Portfolio
  * Plugin URI:  https://priscillachapman.com/
  * Description: Adds enhanced features and allows you to customize Jetpack Portfolio features
  * Version:     1.0.0
@@ -35,7 +35,7 @@ add_action( 'registered_post_type', 'pmep_change_post_type', 10, 2 );
  */
 function pmep_add_admin_menu() { 
 
-	add_submenu_page( 'options-general.php', 'PM Enhanced Portfolio', 'PM Enhanced Portfolio', 'manage_options', 'pm_enhanced_portfolio', 'pmep_options_page' );
+	add_submenu_page( 'options-general.php', 'PM Portfolio', 'PM Portfolio', 'manage_options', 'pm_enhanced_portfolio', 'pmep_options_page' );
 
 }
 
@@ -125,7 +125,7 @@ function pmep_options_page() {
 	?>
 	<form action="options.php" method="post">
 
-		<h2>PM Enhanced Portfolio</h2>
+		<h2>PM Portfolio</h2>
 		
 		<?php
 		settings_fields( 'pmep_page' );
